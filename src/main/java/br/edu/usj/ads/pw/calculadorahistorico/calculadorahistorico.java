@@ -5,6 +5,7 @@ package br.edu.usj.ads.pw.calculadorahistorico;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class calculadorahistorico {
 
-    List <String> historico = new ArrayList<>();
+    //List <String> historico = new ArrayList<>();
+  @Autowired
+  OperacaoRepository operacaoRepository;
   
     @PostMapping(value="calcular")
     public ModelAndView postCalcular(@RequestParam String operando1,
