@@ -2,7 +2,6 @@ package br.edu.usj.ads.pw.calculadorahistorico;
 
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,8 @@ public class calculadorahistorico {
 
     //List <String> historico = new ArrayList<>();
   @Autowired
-  OperacaoRepository operacaoRepository;
-  
+  OperacaoRepository historico;
+
     @PostMapping(value="calcular")
     public ModelAndView postCalcular(@RequestParam String operando1,
      @RequestParam String operando2, @RequestParam String operador){
@@ -31,14 +30,23 @@ public class calculadorahistorico {
         resultado = operando1Double + operando2Double;
     }
     //colocar a operacao no formato
-    String operacao = operando1 + " " + operador + " " + operando2 + " = " + resultado; 
+    String operacaoString = operando1 + " " + operador + " " + operando2 + " = " + resultado; 
+
+    operacao operacao = new operacao();
+    operacao.setDescricao(operacaoString);
     //salvar no historico
-    historico.add(operacao);
+    historico.save(operacao);
+
+   // historico.add(operacao); ArrayList
     //instanciar template
     ModelAndView modelAndView = new ModelAndView("index");
+   //criar lista com as operacoes vindas do repository
+
+   List<operacao> lista = historico.findAll();
+
     //aplicar resultado da operacao no template
     modelAndView.addObject("resultado", resultado);
-    modelAndView.addObject("historico", historico);
+    modelAndView.addObject("historico", lista);
     //retornar
 
     return modelAndView; 
